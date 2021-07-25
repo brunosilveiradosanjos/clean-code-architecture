@@ -1,4 +1,4 @@
-const validateCpf = require("./validateCpf_before");
+const validateCpf = require("../js/cpf");
 
 console.log(validateCpf.validate("00000000000"));
 console.log(validateCpf.validate("86446422799"));

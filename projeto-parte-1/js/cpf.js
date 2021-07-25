@@ -1,46 +1,37 @@
-function validate(str) {
+CPF_DIVIDER = 11;
+DIGIT_SIZE_1 = 9;
+DIGIT_SIZE_2 = 10;
 
-    if (str !== null && str !== undefined) {
-        if (str.length >= 11 || str.length <= 14) {
-            str = str.replace('.', '').replace('.', '').replace('-', '').replace(" ", "");
-            if (!str.split("").every(c => c === str[0])) {
-                try {
-                    let d1, d2;
-                    let dg1, dg2, rest;
-                    let digito;
-                    let nDigResult;
-                    d1 = d2 = 0;
-                    dg1 = dg2 = rest = 0;
+function checkLengh(cpf) {
+    if (cpf == null || cpf == undefined) return false;
+    return getOnlyDigits(cpf).length === 11 ? true : false;
+}
 
-                    for (let nCount = 1; nCount < str.length - 1; nCount++) {
-                        // if (isNaN(parseInt(str.substring(nCount -1, nCount)))) {
-                        // 	return false;
-                        // } else {
+function getOnlyDigits(cpf) {
+    return cpf.replace(/\D/g, '')
+}
 
-                        digito = parseInt(str.substring(nCount - 1, nCount));
-                        d1 = d1 + (11 - nCount) * digito;
-                        d2 = d2 + (12 - nCount) * digito;
-                        // }
-                    };
+function atLeastOneDifferentDigit(cpf) {
+    const [digit1] = cpf;
+    return !cpf.split("").every(digit => digit === digit1);
+}
 
-                    rest = (d1 % 11);
-                    dg1 = (rest < 2) ? dg1 = 0 : 11 - rest;
-                    d2 += 2 * dg1;
-                    rest = (d2 % 11);
-                    if (rest < 2)
-                        dg2 = 0;
-                    else
-                        dg2 = 11 - rest;
-                    let nDigVerific = str.substring(str.length - 2, str.length);
-                    nDigResult = "" + dg1 + "" + dg2;
-                    return nDigVerific == nDigResult;
-                } catch (e) {
-                    console.error("Erro !" + e);
-                    return false;
-                }
-            } else return false
-        } else return false;
-    } else return false;
+function calculateDigit(cpf, index, size) {
+    let total = 0;
+    [...cpf.toString().substr(0, size)].forEach(element => {
+        total += parseInt(element) * index--;
+    });
+    const rest = (total) % CPF_DIVIDER
+    return rest < 2 ? 0 : CPF_DIVIDER - rest;
+}
+
+function validate(cpf) {
+    if (!checkLengh(cpf)) return false;
+    if (!atLeastOneDifferentDigit(cpf)) return false;
+    cpf = getOnlyDigits(cpf);
+    const digit = cpf.substr(-2, 2);
+    const calculatedDigit = `${calculateDigit(cpf, 10, DIGIT_SIZE_1)}${calculateDigit(cpf, 11, DIGIT_SIZE_2)}`
+    return digit == calculatedDigit;
 }
 
 module.exports = {
