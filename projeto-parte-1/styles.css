@@ -1,0 +1,20 @@
+body {
+    /* background: #001f3f; */
+    background: #0074d9;
+    display: grid;
+    grid-template-areas: "a b c";
+    grid-template-columns: 20vw 60vw 20vw;
+    grid-template-rows: 100vh;
+}
+
+.container {
+    color: cornsilk;
+    display: grid;
+    grid-area: b;
+    justify-content: center;
+    align-items: center;
+}
+
+.cpf {
+    cursor: pointer;
+}

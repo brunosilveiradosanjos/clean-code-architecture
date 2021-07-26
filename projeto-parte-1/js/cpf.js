@@ -25,7 +25,7 @@ function calculateDigit(cpf, index, size) {
     return rest < 2 ? 0 : CPF_DIVIDER - rest;
 }
 
-function validate(cpf) {
+function validateCpf(cpf) {
     if (!checkLengh(cpf)) return false;
     if (!atLeastOneDifferentDigit(cpf)) return false;
     cpf = getOnlyDigits(cpf);
@@ -34,6 +34,6 @@ function validate(cpf) {
     return digit == calculatedDigit;
 }
 
-module.exports = {
-    validate
-};
+// module.exports = {
+//     validateCpf
+// };
