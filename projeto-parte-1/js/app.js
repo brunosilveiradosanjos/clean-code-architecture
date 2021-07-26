@@ -1,4 +1,5 @@
 const cpfButton = document.getElementById('cpf-submit');
+let cpfValid = document.getElementById('is-valid-cpf')
 let validCpf = false;
 
 function getInputValue() {
@@ -8,6 +9,8 @@ function getInputValue() {
 }
 
 if (validCpf) {
-
+    const cpfP = document.createElement('p')
+    console.log(cpfP)
+    // cpfP.textContent = cpfValid
 }
 
