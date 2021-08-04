@@ -34,6 +34,6 @@ function validateCpf(cpf) {
     return digit == calculatedDigit;
 }
 
-// module.exports = {
-//     validateCpf
-// };
+module.exports = {
+    validateCpf
+};

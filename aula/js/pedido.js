@@ -18,6 +18,6 @@ function validatePedido(pedido) {
     return true;
 }
 
-// module.exports = {
-//     validatePedido
-// };
+module.exports = {
+    validatePedido
+};
