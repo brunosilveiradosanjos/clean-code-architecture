@@ -1,44 +1,35 @@
+import Coupon from "./Coupon";
+import Cpf from "./Cpf";
+import OrderItem from "./OrderItem";
+
 export default class Order {
-    cpf: string;
+    public cpf: Cpf;
+    public items: OrderItem[];
+    public coupon: Coupon | undefined;
+
     constructor(cpf: string) {
-        // console.log(`this.validateCpf(${cpf})`, this.validateCpf(cpf));
-        if (this.validateCpf(cpf)) throw new Error("Invalid CPF");
-        this.cpf = cpf;
+        this.cpf = new Cpf(cpf);
+        this.items = [];
     }
 
-    private CPF_DIVIDER = 11;
-    private DIGIT_SIZE_1 = 9;
-    private DIGIT_SIZE_2 = 10;
-
-    checkLengh(cpf: string) {
-        if (cpf == null || cpf == undefined) return false;
-        return cpf.toString().length === 11 ? true : false;
+    addCoupon(coupon: Coupon) {
+        this.coupon = coupon;
     }
 
-    getOnlyDigits(cpf: string) {
-        return cpf.replace(/\D/g, '')
+    addItem(description: string, price: number, quantity: number) {
+        this.items.push(new OrderItem(description, price, quantity))
     }
 
-    atLeastOneDifferentDigit(cpf: string) {
-        const [digit1] = cpf;
-        return !cpf.split("").every(digit => digit == digit1);
-    }
-
-    calculateDigit(cpf: string, index: number, size: number) {
+    getTotal() {
         let total = 0;
-        [...cpf.toString().substr(0, size)].forEach(element => {
-            total += parseInt(element) * index--;
-        });
-        const rest = (total) % this.CPF_DIVIDER
-        return rest < 2 ? 0 : this.CPF_DIVIDER - rest;
+        for (const orderItem of this.items) {
+            total += orderItem.getTotal();
+        }
+        if (this.coupon) {
+            total = total * (1 - this.coupon.percentage / 100)
+        }
+        return total;
     }
 
-    validateCpf(cpf: string) {
-        cpf = this.getOnlyDigits(cpf);
-        if (!this.checkLengh(cpf)) return false;
-        if (!this.atLeastOneDifferentDigit(cpf)) return false;
-        const digit = cpf.substr(-2, 2);
-        const calculatedDigit = `${this.calculateDigit(cpf, 10, this.DIGIT_SIZE_1)}${this.calculateDigit(cpf, 11, this.DIGIT_SIZE_2)}`
-        return digit == calculatedDigit;
-    }
+
 }
